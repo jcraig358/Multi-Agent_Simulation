@@ -59,6 +59,10 @@ class QTree {
     //Add element if max capacity hasn't been reached.
     if((this.elements != null) && (this.elements.length < this.capacity)){
       this.elements.push(element);
+
+      //Set elements group to this tree
+      element.setGroup(this);
+
       return true;
     }
 
@@ -89,12 +93,7 @@ class QTree {
 //------------------------------------------------------------------------------
 /*  Get elements in this QuadTree section */
   getElements(){
-    let output = [];
-    for(let e of this.elements){
-      output.push(e);
-    }
-
-    return output;
+    return this.elements;
   }
 //------------------------------------------------------------------------------
 /*  Get elements ALL elements from this quadtree and its children*/
@@ -106,8 +105,7 @@ class QTree {
       output = this.southwest.getAllElements(output);
     }
     else{
-      output = output.concat(this.getElements());
-      console.log("Elements=" + this.elements.length + " Output now at " + output.length);
+      output = output.concat(this.elements);
     }
 
     return output;

@@ -13,7 +13,6 @@ class QTree {
 /* Subdivide this quad-tree into 4 child quadtrees and pass points to them.
 */
   subdivide(){
-    console.log("Subdividing");
     //Create child quadtrees
     this.northeast = new QTree(new Boundary(
                                this.boundary.x + (this.boundary.w/4),  //origin x
@@ -45,8 +44,6 @@ class QTree {
       else if(this.southwest.insert(e)){ continue; }
     }
     this.elements = null;
-
-    console.log("Subdivided");
   }
 //------------------------------------------------------------------------------
 /* Add a new element to this quad tree section.
@@ -54,13 +51,11 @@ class QTree {
    Pass element to children if this is a parent quad tree.
 */
   insert(element){
-    console.log("entered insert");
     //Does this QTree boundary contain this element
     if(!this.boundary.contains(element.position.x, element.position.y)){
       return false;
     }
 
-    console.log("Inserting");
     //Add element if max capacity hasn't been reached.
     if((this.elements != null) && (this.elements.length < this.capacity)){
       this.elements.push(element);
@@ -90,5 +85,31 @@ class QTree {
       this.southeast.show();
       this.southwest.show();
     }
+  }
+//------------------------------------------------------------------------------
+/*  Get elements in this QuadTree section */
+  getElements(){
+    let output = [];
+    for(let e of this.elements){
+      output.push(e);
+    }
+
+    return output;
+  }
+//------------------------------------------------------------------------------
+/*  Get elements ALL elements from this quadtree and its children*/
+  getAllElements(output){
+    if(this.isParent){
+      output = this.northeast.getAllElements(output);
+      output = this.northwest.getAllElements(output);
+      output = this.southeast.getAllElements(output);
+      output = this.southwest.getAllElements(output);
+    }
+    else{
+      output = output.concat(this.getElements());
+      console.log("Elements=" + this.elements.length + " Output now at " + output.length);
+    }
+
+    return output;
   }
 }

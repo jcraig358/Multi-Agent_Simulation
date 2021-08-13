@@ -1,4 +1,4 @@
-class agent {
+class Agent {
 
   constructor(){
     this.maxForce = 0.1;

@@ -1,5 +1,5 @@
 let qtree;
-let num_points = 100;
+let num_points = 1000;
 let curr_millis = 0;
 let agents = [];
 
@@ -10,8 +10,10 @@ function setup() {
   rectMode(CENTER);
 
   for(let i=0; i<num_points; i++){
-    agents.push(new Agent());
+    agents.push(new Agent(i));
   }
+
+  frameRate(120);
 }
 
 function draw() {
@@ -25,16 +27,11 @@ function draw() {
 
   //Run agents
   for(a of agents){
-    a.run();
+    a.run(qtree);
   }
 
   //Draw agents
-  noFill();
-  stroke(255);
-  strokeWeight(1);
-  for(let a of agents){
-    circle(a.position.x, a.position.y, 2);
-  }
+
 
   //Draw QTree boundaries
   //qtree.show();

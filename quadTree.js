@@ -38,7 +38,7 @@ class QTree {
 
     //Pass elements to children and clear parent elements
     for(let e of this.elements){
-      if(this.northeast.insert(e)){ continue; }
+           if(this.northeast.insert(e)){ continue; }
       else if(this.northwest.insert(e)){ continue; }
       else if(this.southeast.insert(e)){ continue; }
       else if(this.southwest.insert(e)){ continue; }
@@ -106,6 +106,36 @@ class QTree {
     }
     else{
       output = output.concat(this.elements);
+    }
+
+    return output;
+  }
+//------------------------------------------------------------------------------
+  findElementsInRange(x,y,r,output = [], fill = false){
+    if(!this.boundary.intersectCircle(x,y,r)){ return output; }
+
+    //If parent pass to children
+    if(this.isParent){
+      output = this.northeast.findElementsInRange(x,y,r,output, fill);
+      output = this.northwest.findElementsInRange(x,y,r,output, fill);
+      output = this.southeast.findElementsInRange(x,y,r,output, fill);
+      output = this.southwest.findElementsInRange(x,y,r,output, fill);
+    }
+    //Otherwise, determine elements in range
+    else{
+      for(let e of this.elements){
+        let distance = dist(x,y, e.position.x, e.position.y);
+        if(distance < r){
+          output.push(e);
+          //if(fill){ e.highlight(); }
+        }
+      }
+
+      if(fill){
+        noFill();
+        stroke(200);
+        rect(this.boundary.x, this.boundary.y, this.boundary.w, this.boundary.h);
+      }
     }
 
     return output;

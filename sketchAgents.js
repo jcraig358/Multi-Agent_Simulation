@@ -1,5 +1,5 @@
 let qtree;
-let num_points = 1000;
+let num_points = 500;
 let curr_millis = 0;
 let agents = [];
 

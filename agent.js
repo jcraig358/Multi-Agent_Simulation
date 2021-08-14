@@ -1,7 +1,7 @@
 class Agent {
 
   constructor(id){
-    this.maxForce = 0.1;
+    this.maxForce = 0.075;
     this.maxSpeed = 5;
     this.position = createVector(random(width), random(height));
     this.velocity = createVector(random(-1,1), random(-1,1));
@@ -9,7 +9,7 @@ class Agent {
     this.group;
     this.range = 30;
     this.id = id;
-    this.size = 3;
+    this.size = 5;
   }
 //------------------------------------------------------------------------------
   wrap(){
@@ -185,7 +185,7 @@ class Agent {
 
       let otherPos = this.altPosition(other);
 
-      if(p5.Vector.dist(this.position, otherPos) > this.range/1.5){continue;}
+      if(p5.Vector.dist(this.position, otherPos) > this.range/1.25){continue;}
 
       let desired = p5.Vector.sub(this.position, otherPos);
       let distance = p5.Vector.dist(otherPos, this.position);
@@ -219,8 +219,8 @@ class Agent {
       let distance = p5.Vector.dist(otherPos, this.position);
 
       //Determine signifcance factor
-      let factor = lerp(0.0,1.0, min(distance, this.range)/this.range);
-      desired.mult(factor);
+      //let factor = lerp(0.0,2.0, min(distance, this.range)/this.range);
+      //desired.mult(factor);
 
       //Sum desired vectors together
       steer_force.add(desired);
@@ -242,7 +242,7 @@ class Agent {
     let coh = this.cohesion(agents);
 
     ali.mult(1.0);
-    sep.mult(2);
+    sep.mult(1.5);
     coh.mult(1.0);
 
     let total_force = createVector();
@@ -294,7 +294,7 @@ class Agent {
   highlight(){
     stroke(250,0,0);
     noFill();
-    circle(this.position.x, this.position.y, this.range/3);
+    circle(this.position.x, this.position.y, this.range);
   }
 //------------------------------------------------------------------------------
 }

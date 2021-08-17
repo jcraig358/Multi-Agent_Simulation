@@ -114,6 +114,8 @@ class QTree {
   findElementsInRange(x,y,r,output = [], fill = false){
     if(!this.boundary.intersectCircle(x,y,r)){ return output; }
 
+    return this.getAllElements(output);
+
     //If parent pass to children
     if(this.isParent){
       output = this.northeast.findElementsInRange(x,y,r,output, fill);

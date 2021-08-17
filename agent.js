@@ -1,7 +1,7 @@
 class Agent {
 
   constructor(id){
-    this.maxForce = 0.075;
+    this.maxForce = 0.1;
     this.maxSpeed = 5;
     this.position = createVector(random(width), random(height));
     this.velocity = createVector(random(-1,1), random(-1,1));
@@ -185,13 +185,13 @@ class Agent {
 
       let otherPos = this.altPosition(other);
 
-      if(p5.Vector.dist(this.position, otherPos) > this.range/1.25){continue;}
+      if(p5.Vector.dist(this.position, otherPos) > this.range/2){continue;}
 
       let desired = p5.Vector.sub(this.position, otherPos);
       let distance = p5.Vector.dist(otherPos, this.position);
 
       //Determine signifcance factor
-      let factor = lerp(0.001, 5.0, min(distance, (this.range/2))/(this.range));
+      let factor = lerp(0.0001, 1000.0, min(distance, (this.range/2))/(this.range));
       desired.div(factor);
 
       //Sum desired vectors together
@@ -219,8 +219,8 @@ class Agent {
       let distance = p5.Vector.dist(otherPos, this.position);
 
       //Determine signifcance factor
-      //let factor = lerp(0.0,2.0, min(distance, this.range)/this.range);
-      //desired.mult(factor);
+      let factor = lerp(0.0,1.0, min(distance, this.range)/this.range);
+      desired.mult(factor);
 
       //Sum desired vectors together
       steer_force.add(desired);

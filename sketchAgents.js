@@ -20,7 +20,7 @@ function draw() {
   background(0);
 
   //Buid QTree
-  qtree = new QTree(new Boundary(width/2, height/2, width, height), 5);
+  qtree = new QTree(new Boundary(width/2, height/2, width, height), 8);
   for(a of agents){
     qtree.insert(a);
   }

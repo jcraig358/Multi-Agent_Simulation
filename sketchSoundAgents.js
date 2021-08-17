@@ -5,14 +5,14 @@ let agents = [];
 
 let frate = 0;
 
-let fft;
+//let fft;
 let cnv;
 
-let music;
+//let music;
 
 function preload(){
-  soundFormats('mp3');
-  music = loadSound("music.mp3");
+  //soundFormats('mp3');
+  //music = loadSound("music.mp3");
 }
 
 //------------------------------------------------------------------------------
@@ -26,15 +26,11 @@ function setup() {
 
   frameRate(120);
 
-  fft = new p5.FFT();
+  //fft = new p5.FFT();
 }
 //------------------------------------------------------------------------------
 function draw() {
   background(0);
-
-  if(music == null){
-
-  }
 
   //Buid QTree
   qtree = new QTree(new Boundary(width/2, height/2, width, height), 8);
@@ -62,5 +58,5 @@ function draw() {
 }
 //------------------------------------------------------------------------------
 function mousePressed(){
-  music.play();
+
 }

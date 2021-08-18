@@ -1,15 +1,15 @@
 class Agent {
 
   constructor(id){
-    this.maxForce = 0.1;
-    this.maxSpeed = 5;
+    this.maxForce = 0.05;
+    this.maxSpeed = 3;
     this.position = createVector(random(width), random(height));
     this.velocity = createVector(random(-1,1), random(-1,1));
     this.acceleration = createVector();
     this.group;
     this.range = 30;
     this.id = id;
-    this.size = 5;
+    this.size = 7;
   }
 //------------------------------------------------------------------------------
   wrap(){
@@ -179,20 +179,22 @@ class Agent {
   separation(agents){
     //Create zero vector
     let steer_force = createVector(0,0);
+    let neighbourFactor = 1.25;
 
     for(let other of agents){
       if(other == this){continue;}
 
       let otherPos = this.altPosition(other);
 
-      if(p5.Vector.dist(this.position, otherPos) > this.range/2){continue;}
+      if(p5.Vector.dist(this.position, otherPos) > this.range/neighbourFactor){continue;}
 
       let desired = p5.Vector.sub(this.position, otherPos);
       let distance = p5.Vector.dist(otherPos, this.position);
 
       //Determine signifcance factor
-      let factor = lerp(0.0001, 1000.0, min(distance, (this.range/2))/(this.range));
-      desired.div(factor);
+      //let factor = lerp(0.0001, 1.0,distance/(this.range/neighbourFactor));
+      //desired.div(factor);
+      desired.div(max(distance*distance, 0.0001));
 
       //Sum desired vectors together
       steer_force.add(desired);
@@ -256,32 +258,39 @@ class Agent {
   }
 //------------------------------------------------------------------------------
   update(){
-    this.position.add(this.velocity);
-
     this.velocity.add(this.acceleration);
     this.velocity.limit(this.maxSpeed);
-
+    this.position.add(this.velocity);
     this.wrap();
 
     this.acceleration.mult(0);
   }
 //------------------------------------------------------------------------------
   render(){
-    fill(255)
-    stroke(250);
-    strokeWeight(1);
-
+    if(this.id == 0){
+      stroke(0,250,0);
+      noFill();
+      circle(this.position.x, this.position.y, this.range*2);
+      fill(50,250,125)
+      stroke(250);
+      strokeWeight(1);
+    }
+    else if(this.highlighted){
+      fill(255,0,0)
+      stroke(250);
+      strokeWeight(1);
+    }
+    else{
+      fill(255)
+      stroke(250);
+      strokeWeight(1);
+    }
     push();
     translate(this.position.x, this.position.y);
     rotate(this.velocity.heading());
     triangle(-this.size, -this.size/2, -this.size, this.size/2, this.size, 0)
     pop();
-
-    if(this.id == 0){
-      stroke(0,250,0);
-      noFill();
-      circle(this.position.x, this.position.y, this.range*2);
-    }
+    this.highlighted = false;
   }
 //------------------------------------------------------------------------------
   run(base_qtree){
@@ -292,9 +301,10 @@ class Agent {
   }
 //------------------------------------------------------------------------------
   highlight(){
-    stroke(250,0,0);
-    noFill();
-    circle(this.position.x, this.position.y, this.range);
+    //stroke(250,0,0);
+    //noFill();
+    //circle(this.position.x, this.position.y, this.range);
+    this.highlighted = true;
   }
 //------------------------------------------------------------------------------
 }

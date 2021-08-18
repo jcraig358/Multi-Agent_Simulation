@@ -13,7 +13,7 @@ function setup() {
     agents.push(new Agent(i));
   }
 
-  frameRate(30);
+  frameRate(60);
 }
 
 function draw() {
